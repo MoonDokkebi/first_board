@@ -34,4 +34,22 @@ public class BoardApiController {
                 ResponseEntity.status(HttpStatus.OK).body(create) :
                 ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
+    //patch
+    @PatchMapping("/api/boards/{id}")
+    public ResponseEntity<Board> update(@PathVariable Long id,
+                                        @RequestBody BoardDto boardDto){
+        Board update = boardService.update(id,boardDto);
+        return (update!=null)?
+                ResponseEntity.status(HttpStatus.OK).body(update):
+                ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    }
+    //DELETE
+    @DeleteMapping("/api/boards/{id}")
+    public ResponseEntity<Board> delete(@PathVariable Long id){
+        Board deleted = boardService.delete(id);
+        return (deleted != null) ?
+                ResponseEntity.status(HttpStatus.OK).build() :
+                ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    }
+
 }

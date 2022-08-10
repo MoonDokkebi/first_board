@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
-import java.security.PrivateKey;
 
 @Entity
 @AllArgsConstructor
@@ -24,4 +23,15 @@ public class Board {
     private String explan;
 
 
+    public boolean patch(Board board) {
+        if(board.title != null){
+            this.title=board.title;
+            return true;
+        }
+        if (board.explan != null){
+            this.explan = board.explan;
+            return true;
+        }
+        return false;
+    }
 }
