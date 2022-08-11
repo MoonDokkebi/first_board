@@ -20,7 +20,7 @@ public class Board {
     @Column
     private String title;
     @Column
-    private String explan;
+    private String explain;
 
 
     public boolean patch(Board board) {
@@ -28,8 +28,8 @@ public class Board {
             this.title=board.title;
             return true;
         }
-        if (board.explan != null){
-            this.explan = board.explan;
+        if (board.explain != null){
+            this.explain = board.explain;
             return true;
         }
         return false;

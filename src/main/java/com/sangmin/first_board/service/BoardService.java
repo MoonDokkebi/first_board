@@ -32,6 +32,7 @@ public class BoardService {
     }
 
     public Board update(Long id, BoardDto boardDto) {
+        //수정용 엔티티 생성
         Board board = boardDto.toEntity();
         log.info("id : {}, board : {}", id,board.toString());
         //대상 엔티티를 조회
@@ -43,8 +44,7 @@ public class BoardService {
         }
         //정상 요청 처리
         target.patch(board);
-        Board updated = boardRepository.save(target);
-        return updated;
+        return boardRepository.save(target);
 
 
     }

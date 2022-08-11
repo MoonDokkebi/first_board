@@ -16,6 +16,8 @@ public class BoardApiController {
     @Autowired
     private BoardService boardService;
 
+
+
     //GET
     @GetMapping("/api/boards")
     public List<Board> index(){
@@ -34,15 +36,17 @@ public class BoardApiController {
                 ResponseEntity.status(HttpStatus.OK).body(create) :
                 ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
+
     //patch
     @PatchMapping("/api/boards/{id}")
     public ResponseEntity<Board> update(@PathVariable Long id,
                                         @RequestBody BoardDto boardDto){
-        Board update = boardService.update(id,boardDto);
-        return (update!=null)?
-                ResponseEntity.status(HttpStatus.OK).body(update):
+        Board updated = boardService.update(id,boardDto);
+        return (updated!=null)?
+                ResponseEntity.status(HttpStatus.OK).body(updated):
                 ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
+
     //DELETE
     @DeleteMapping("/api/boards/{id}")
     public ResponseEntity<Board> delete(@PathVariable Long id){

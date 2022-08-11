@@ -13,10 +13,10 @@ import lombok.ToString;
 public class BoardDto {
     private Long id;
     private String title;
-    private String explan;
+    private String explain;
 
     public Board toEntity(){
-        return new Board(id, title, explan);
+        return new Board(id, title, explain);
     }
 
 }
