@@ -9,19 +9,18 @@
     </thead>
     <tbody>
     {{#board}}
-        <tr>
-            <th>{{id}}</th>
-            <td>{{title}}</td>
-            <td>{{explan}}</td>
-        </tr>
+    <tr>
+        <th>{{id}}</th>
+        <td>{{title}}</td>
+        <td>{{explain}}</td>
+    </tr>
     {{/board}}
     </tbody>
 </table>
 
-<a href="/boards/{{board.id}}/edit" class="btn btn-primary" >Edit</a>
-<a href="/boards/{{board.id}}/delete" class="btn btn-danger" >Delete</a>
-<a href="/boards">Go to Article List</a>
+<a href="/boards/{{board.id}}/edit"class="btn btn-primary" >Edit</a>
+<a href="/boards/{{board.id}}/delete"class="btn btn-danger" >Delete</a>
+<a href="/boards">Go to Board List</a>
 
-{{>comments/_comments}}
 
 {{>layouts/footer}}

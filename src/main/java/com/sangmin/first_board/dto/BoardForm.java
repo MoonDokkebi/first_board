@@ -7,10 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @AllArgsConstructor
-@NoArgsConstructor
-@Getter
 @ToString
-public class BoardDto {
+public class BoardForm {
     private Long id;
     private String title;
     private String explain;

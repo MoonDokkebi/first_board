@@ -1,6 +1,6 @@
 package com.sangmin.first_board.Controller;
 
-import com.sangmin.first_board.dto.BoardDto;
+import com.sangmin.first_board.dto.BoardForm;
 import com.sangmin.first_board.entity.Board;
 import com.sangmin.first_board.repository.BoardRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -27,11 +27,11 @@ public class BoardController {
         return "boards/new";
     }
     @PostMapping("/boards/create")
-    public String createBoard(BoardDto boardDto){
-        log.info(boardDto.toString());
-        // System.out.println(boardDto.toString()); -> sout를 로깅기능으로 대체
+    public String createBoard(BoardForm boardForm){
+                log.info(boardForm.toString());
+//         System.out.println(boardDto.toString()); -> sout를 로깅기능으로 대체
         //1.Dto 를 Entity로 변환
-        Board board = boardDto.toEntity();
+        Board board = boardForm.toEntity();
         log.info(board.toString());
 
         //2. 리포지토리에게 엔티티를  DB 안에 저장하게함
@@ -82,11 +82,11 @@ public class BoardController {
     }
 
     @PostMapping("/boards/update")
-    public String update(BoardDto boardDto){
-        log.info(boardDto.toString());
+    public String update(BoardForm boardForm){
+        log.info(boardForm.toString());
 
         //1.DTO 를 엔티티로 변환
-        Board boardEntity = boardDto.toEntity();
+        Board boardEntity = boardForm.toEntity();
         log.info(boardEntity.toString());
 
         //2. 엔티티를 DB로 저장 한다.

@@ -2,21 +2,21 @@
 <table class="table">
     <thead>
     <tr>
-        <th scope="col">ID</th>
+        <th scope="col">id</th>
         <th scope="col">title</th>
         <th scope="col">explain</th>
     </tr>
     </thead>
     <tbody>
-    {{#articleList}}
+    {{#boardList}}
         <tr>
             <th>{{id}}</th>
             <td><a href="/boards/{{id}}"> {{title}}</a></td>
-            <td>{{explan}}</td>
+            <td>{{explain}}</td>
         </tr>
-    {{/articleList}}
+    {{/boardList}}
     </tbody>
 </table>
-<a href="/boards/new">New Articles</a>
+<a href="/boards/new">New Boards</a>
 
 {{>layouts/footer}}
