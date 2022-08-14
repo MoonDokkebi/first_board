@@ -1,0 +1,168 @@
+<div id="posts-list">
+    {{#postDtos}}
+        <div class="card m-2" id="posts-{{id}}">
+            <div class="card-header">
+                {{nickname}}
+                <!--모델 트리거 버튼 -->
+                <button type="button"
+                        class="btn btn -sm btn-outline-primary"
+                        data-bs-toggle="modal"
+                        data-bs-target="#post-edit-modal"
+                        data-bs-id ="{{id}}"
+                        data-bs-title ="{{title}}"
+                        data-bs-nickname="{{nickname}}"
+                        data-bs-body ="{{body}}"
+                        data-bs-board-id ="{{boardId}}"> 수정 </button>
+                <!--게시글삭제 버튼 -->
+                <button type="button",
+                        class="btn btn-sm btn-outline-danger post-delete-btn"
+                        data-post-id = "{{id}}">삭제</button>
+            </div>
+            <div class="card-body">
+                {{body}}
+            </div>
+        </div>
+    {{/postDtos}}
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="post-edit-modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">게시글 수정 </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!--게시글 수정 폼 -->
+                <form>
+                    <!-- 제목 입력 -->
+                    <div class="mb-3">
+                        <label class="form-label">제목</label>
+                        <input type="text" class="form-control form-control-sm" id="edit-post-title">
+                    </div>
+
+                    <!-- 닉네임 입력 -->
+                    <div class="mb-3">
+                        <label class="form-label">닉네임</label>
+                        <input type="text" class="form-control form-control-sm" id="edit-post-nickname">
+                    </div>
+
+                    <!-- 게시글 본문 입력 -->
+                    <div class="mb-3">
+                        <label class="form-label">게시글 내용</label>
+                        <textarea type="text" class="form-control form-control-sm" rows="3" id="edit-post-body"></textarea>
+                    </div>
+
+                    <!-- 히든 인풋 -->
+                    <input type="hidden" id="edit-post-id" >
+                    <input type="hidden" id="edit-post-board-id" >
+
+                    <!-- 전송 버튼 -->
+                    <button type="button" class="btn btn-outline-primary btn-sm" id="post-update-btn">수정완료</button>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 모달 이벤트 처리 -->
+
+<script>
+    {
+        // 모달 요소 선택
+        const postEditModal = document.querySelector("#post-edit-modal")
+
+        //모달 이벤트 감지
+        postEditModal.addEventListener("show.bs.modal",function (event){
+            //트리거 버튼 선택
+            const triggerBtn = event.relatedTarget;
+            //데이터 가져오기
+            const id = triggerBtn.getAttribute("data-bs-id")
+            const title = triggerBtn.getAttribute("data-bs-title")
+            const nickname = triggerBtn.getAttribute("data-bs-nickname")
+            const body = triggerBtn.getAttribute("data-bs-body")
+            const boardId = triggerBtn.getAttribute("data-bs-board-id")
+            //데이터 반영
+            document.querySelector("#edit-post-title");
+            document.querySelector("#edit-post-nickname").value =nickname;
+            document.querySelector("#edit-post-body").value = body;
+            document.querySelector("#edit-post-id").value = id;
+            document.querySelector("#edit-post-board-id").value = boardId;
+
+        });
+    }
+    {
+        //수정 완료 버튼
+        const postUpdateBtn = document.querySelector("#post-update-btn")
+
+        //클릭 이벤트 감지 및 처리
+        postUpdateBtn.addEventListener("click", function () {
+            //수정 게시글 객체 생성
+            const post = {
+                id: document.querySelector("#edit-post-id").value,
+                title: document.querySelector("#edit-post-title").value,
+                nickname: document.querySelector("#edit-post-nickname").value,
+                body: document.querySelector("#edit-post-body").value,
+                board_id: document.querySelector("#edit-post-board-id").value
+            }
+            console.log(post)
+            //수정 REST API 호출 - fetch()
+            const url = "/api/posts/" + post.id;
+            fetch(url, {
+                method: "PATCH",
+                body: JSON.stringify(post),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            }).then(response =>{
+                //http 응답코드에 따른 메시지 출력
+                const msg = (response.ok) ? "게시글이 수정되었습니다." : "게시글 수정 실패!";
+                alert(msg);
+                //현재페이지를 새로고침
+                window.location.reload();
+            });
+        });
+
+    }
+</script>
+
+<!-- 게시글 삭제 -->
+<script>
+    {
+        //삭제 버튼 선택
+        const postDeleteBtns = document.querySelectorAll(".post-delete-btn");
+
+        //삭제버튼 이벤트 처리
+        postDeleteBtns.forEach(btn => {
+            //각 버튼의 이벤트 처리을 등록
+            btn.addEventListener("click",function (){
+                //이벤트 발생 요소를 선택
+                const postDeleteBtn = event.srcElement;
+
+                //삭제 게시글 id 가져오기
+                const postId = postDeleteBtn.getAttribute("data-post-id");
+                console.log('삭제 버튼 클릭 :' + postId+ '번 게시글');
+
+                //삭제 API 호출및 처리
+                const url = `/api/posts/${postId}`;
+                fetch(url,{
+                    method: "DELETE"
+                }).then(response =>{
+                    //게시글 삭제 실패 처리
+                    if (!response.ok){
+                        alert("게시글 삭제 실패!");
+                        return;
+                    }
+                    //게시글 삭제 성공시 게시글을 화면에서 지움
+                    const target = document.querySelector(`#posts-${postId}`);
+                    target.remove();
+                })
+
+            })
+        })
+
+    }
+</script>
