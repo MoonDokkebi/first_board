@@ -1,11 +1,11 @@
 <div class="card m-2" id="posts-new">
     <div class="card-body">
-        <!--댓글 작성 폼 -->
+        <!--게시글 작성 폼 -->
         <form>
             <!--제목 입력 -->
             <div class="mb-3">
                 <label class="form-label">제목</label>
-                <input type="text" class="form-control form-control-sm" id="new-post-title">
+                <input type="text" class="form-control form-control-sm" id="new-post-postTitle">
             </div>
             <!-- 닉네임 입력 -->
             <div class="mb-3">
@@ -13,7 +13,7 @@
                 <input type="text" class="form-control form-control-sm" id="new-post-nickname">
             </div>
 
-            <!-- 댓글 본문 입력 -->
+            <!-- 게시글 본문 입력 -->
             <div class="mb-3">
                 <label class="form-label">게시글 내용</label>
                 <textarea type="text" class="form-control form-control-sm" rows="3" id="new-post-body"></textarea>
@@ -31,23 +31,22 @@
     </div>
 </div>
 
-
 <script>
     {
-        //댓글 생성 버튼을 변수화 (id가 post-create-btn 인 대상
+        //게시글 생성 버튼을 변수화 (id가 post-create-btn 인 대상
         const postCreateBtn = document.querySelector("#post-create-btn");
 
         //버튼 클릭 이벤트를 감지
         postCreateBtn.addEventListener("click", function () {
-            //새 댓글 객체 생성
+            //새 게시글 객체 생성
             const post = {
-                title : document.querySelector("#new-post-title").value,
+                postTitle : document.querySelector("#new-post-postTitle").value,
                 nickname: document.querySelector("#new-post-nickname").value,
                 body: document.querySelector("#new-post-body").value,
                 board_id: document.querySelector("#new-post-board-id").value
             }
-            //댓글 객체를 출력
-            console.log(post);
+            //게시글 객체를 출력
+            console.log("여기를 봐!!!!!!", post);
 
             //fetch() - Talend Api 요청을 JavaScript로 보내준다.
             const url = "/api/boards/" + post.board_id + "/posts";
@@ -59,7 +58,7 @@
                 }
             }).then(response => {
                 // http 응답 코드에 따른 메시지 출력
-                const msg = (response.ok) ? "댓글이 등록되었습니다." : "댓글 등록 실패..!";
+                const msg = (response.ok) ? "게시글이 등록되었습니다." : "게시글 등록 실패..!";
                 alert(msg);
                 // 현재 페이지 새로고침
                 window.location.reload();

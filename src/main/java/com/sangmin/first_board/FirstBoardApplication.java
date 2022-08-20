@@ -10,4 +10,5 @@ public class FirstBoardApplication {
 		SpringApplication.run(FirstBoardApplication.class, args);
 	}
 
+
 }

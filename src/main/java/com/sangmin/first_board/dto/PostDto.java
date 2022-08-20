@@ -9,20 +9,19 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @ToString
 public class PostDto {
-    private Long id;
+    private Long postId;
     @JsonProperty("board_id")
-    private long boardId;
+    private Long boardId;
     private String postTitle;
     private String nickname;
     private String body;
 
     public static PostDto createPostDto(Post post) {
         return new PostDto(
-                post.getId(),
+                post.getPostId(),
                 post.getBoard().getId(),
                 post.getPostTitle(),
                 post.getNickname(),

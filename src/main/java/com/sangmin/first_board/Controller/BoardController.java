@@ -1,8 +1,10 @@
 package com.sangmin.first_board.Controller;
 
 import com.sangmin.first_board.dto.BoardForm;
+import com.sangmin.first_board.dto.PostDto;
 import com.sangmin.first_board.entity.Board;
 import com.sangmin.first_board.repository.BoardRepository;
+import com.sangmin.first_board.service.PostService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,8 +21,8 @@ import java.util.List;
 public class BoardController {
     @Autowired //스프링 부트가 미리 생성해놓는 객페를 가져다 자동으로 연결
     private BoardRepository boardRepository;
-    //@Autowired
-    //private CommentService commentService;
+    @Autowired
+    private PostService postService;
 
     @GetMapping("/boards/new")
     public String newBoardDto(){
@@ -46,11 +48,11 @@ public class BoardController {
         Board boardEntity =boardRepository.findById(id).orElse(null);//Id 값으로 찾는데 없으면 null 반환
         //Optional<Board> boardEntity =boardRepository.findById(id); 이런 방식도 가능 (JAVA 8의 optional)
 
-        //List<CommentDto> commentDtos = commentService.comments(id);
+        List<PostDto> postDtos = postService.posts(id);
 
         // 2 : 가져온 데이터를 모델에 등록!
         model.addAttribute("board", boardEntity);
-       // model.addAttribute("commentDtos", commentDtos);
+        model.addAttribute("postDtos", postDtos);
 
         // 3 : 보여줄 페이지를 설정!
         return "boards/show";

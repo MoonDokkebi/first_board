@@ -9,8 +9,10 @@ import java.util.List;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
     @Query(value =
-            "SELECT * FROM Post where board_id : boardId",
+            "SELECT * " +
+            "FROM Post" +
+            " WHERE board_id ",
             nativeQuery = true)
-    List<Post> findbyBoardId(Long boardId);
+    List<Post> findByBoardId(Long boardId);
 
 }

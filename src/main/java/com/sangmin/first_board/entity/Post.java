@@ -17,10 +17,10 @@ import javax.persistence.*;
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long postId;
 
     @ManyToOne
-    @JoinColumn(name = "post_id")
+    @JoinColumn(name = "board_id")
     private Board board;
 
     @Column
@@ -34,20 +34,31 @@ public class Post {
 
 
     public static Post createPost(PostDto dto, Board board) {
-        if(dto.getId() != null){
+        if(dto.getPostId() != null){
             throw new IllegalArgumentException("게시글 생성 실패 댓글의 ID 가있어야 합니다.");
         }
         if(dto.getBoardId() != board.getId()){
-            throw new IllegalArgumentException("댓글 생성 실패 ! 게시판의 id가 잘못되었습니다.");
+            throw new IllegalArgumentException("게시글 생성 실패 ! 게시판의 id가 잘못되었습니다.");
         }
 
         //엔팉티 생성및 반환
         return new Post(
-                dto.getId(),
+                dto.getPostId(),
                 board,
                 dto.getPostTitle(),
                 dto.getNickname(),
                 dto.getBody()
         );
+    }
+
+    public void patch(PostDto dto) {
+        if(this.postId != dto.getPostId())
+            throw new IllegalArgumentException("게시글 수정 실패! 잘못된 Id가 입력 되었습니다.");
+        if (dto.getPostTitle()!= null)
+            this.postTitle= dto.getPostTitle();
+        if (dto.getNickname() != null)
+            this.nickname = dto.getNickname();
+        if (dto.getBody() != null)
+            this.body = dto.getBody();
     }
 }

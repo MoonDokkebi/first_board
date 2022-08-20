@@ -1,25 +1,28 @@
 <div id="posts-list">
     {{#postDtos}}
-        <div class="card m-2" id="posts-{{id}}">
+        <div class="card m-2" id="posts-{{postId}}">
             <div class="card-header">
-                {{nickname}}
+                {{postTitle}}
                 <!--모델 트리거 버튼 -->
                 <button type="button"
                         class="btn btn -sm btn-outline-primary"
                         data-bs-toggle="modal"
                         data-bs-target="#post-edit-modal"
-                        data-bs-id ="{{id}}"
-                        data-bs-title ="{{title}}"
+                        data-bs-id ="{{postId}}"
+                        data-bs-title ="{{postTitle}}"
                         data-bs-nickname="{{nickname}}"
                         data-bs-body ="{{body}}"
                         data-bs-board-id ="{{boardId}}"> 수정 </button>
                 <!--게시글삭제 버튼 -->
                 <button type="button",
                         class="btn btn-sm btn-outline-danger post-delete-btn"
-                        data-post-id = "{{id}}">삭제</button>
+                        data-post-id = "{{postId}}">삭제</button>
             </div>
             <div class="card-body">
                 {{body}}
+            </div>
+            <div class="card-footer text-muted">
+                {{nickname}}
             </div>
         </div>
     {{/postDtos}}
@@ -40,7 +43,7 @@
                     <!-- 제목 입력 -->
                     <div class="mb-3">
                         <label class="form-label">제목</label>
-                        <input type="text" class="form-control form-control-sm" id="edit-post-title">
+                        <input type="text" class="form-control form-control-sm" id="edit-post-postTitle">
                     </div>
 
                     <!-- 닉네임 입력 -->
@@ -80,16 +83,16 @@
             //트리거 버튼 선택
             const triggerBtn = event.relatedTarget;
             //데이터 가져오기
-            const id = triggerBtn.getAttribute("data-bs-id")
-            const title = triggerBtn.getAttribute("data-bs-title")
+            const postId = triggerBtn.getAttribute("data-bs-id")
+            const postTitle = triggerBtn.getAttribute("data-bs-title")
             const nickname = triggerBtn.getAttribute("data-bs-nickname")
             const body = triggerBtn.getAttribute("data-bs-body")
             const boardId = triggerBtn.getAttribute("data-bs-board-id")
             //데이터 반영
-            document.querySelector("#edit-post-title");
+            document.querySelector("#edit-post-postTitle").value =postTitle;
             document.querySelector("#edit-post-nickname").value =nickname;
             document.querySelector("#edit-post-body").value = body;
-            document.querySelector("#edit-post-id").value = id;
+            document.querySelector("#edit-post-id").value = postId;
             document.querySelector("#edit-post-board-id").value = boardId;
 
         });
@@ -102,15 +105,15 @@
         postUpdateBtn.addEventListener("click", function () {
             //수정 게시글 객체 생성
             const post = {
-                id: document.querySelector("#edit-post-id").value,
-                title: document.querySelector("#edit-post-title").value,
+                postId: document.querySelector("#edit-post-id").value,
+                postTitle: document.querySelector("#edit-post-postTitle").value,
                 nickname: document.querySelector("#edit-post-nickname").value,
                 body: document.querySelector("#edit-post-body").value,
                 board_id: document.querySelector("#edit-post-board-id").value
-            }
+            };
             console.log(post)
             //수정 REST API 호출 - fetch()
-            const url = "/api/posts/" + post.id;
+            const url = "/api/posts/" + post.postId;
             fetch(url, {
                 method: "PATCH",
                 body: JSON.stringify(post),
